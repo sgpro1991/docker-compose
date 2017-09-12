@@ -1,0 +1,28 @@
+version: "3"
+
+networks:
+  dbs:
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=trololo9
+      - POSTGRES_USER=sgpro1991
+      - POSTGRES_DB=aoblgazeta
+    restart: always
+    networks:
+      - dbs
+
+  django:
+    build:
+      context: ./volume/django-uwsgi-nginx
+    links:
+      - "postgres:db"
+    restart: always
+    ports:
+      - "2727:80"
+    networks:
+      - dbs
+    depends_on:
+      - postgres
